@@ -59,8 +59,10 @@ module.exports = function(grunt){
         ], iif('NPM_ENABLED', [
             util.format('sudo npm --prefix %s install --production --loglevel %s', dest, verbosity),
         ]), [
-	    util.format('sudo ln -sfn %s %s', dest, target),
-            commands.pm2_reload(),
+	    util.format('sudo ln -sfn %s %s', dest, target)
+        ], iif('PM2_RELOAD_ENABLED', [
+            commands.pm2_reload()
+        ]), [
             commands.pm2_start(name)
         ], iif('NGINX_ENABLED', [
             'sudo nginx -s reload'
