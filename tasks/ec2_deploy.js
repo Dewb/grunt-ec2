@@ -26,9 +26,15 @@ module.exports = function(grunt){
         var version = conf('SRV_VERSION');
         var v = grunt.config('pkg.version');
         var dest = util.format(version, v);
+	
+	var localPath = process.cwd();
+	if (localPath.match(":")) {
+            localPath = localPath.replace(/\\/g, "/").replace(/^(\w)\:/, "\/$1")
+	}
+
         var rsync = {
             name: 'v' + v,
-            local: process.cwd(),
+            local: localPath, 
             remote: conf('SRV_RSYNC_LATEST'),
             dest: dest,
             includes: conf('RSYNC_INCLUDES').map(env),
